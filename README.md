@@ -36,7 +36,7 @@ $.ajax({
     }
 })
 console.log('代码执行结束');
-
+```
 **上面是一段简易的ajax请求代码：**
 
 - `ajax`进入`Event Table`，注册回调函数`success`。
