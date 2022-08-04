@@ -38,5 +38,48 @@ let data = [];``$.ajax({``  ``url:blog.csdn.net,``  ``data:data,``  ``success:()
 - 执行`console.log`('代码执行结束')。
 - ajax事件完成，回调函数`success`进入`Event Queue`。
 - 主线程从`Event Queue`读取回调函数`success`并执行。
+
+
+
+
+```javascript
+setTimeout(()=>{
+
+  console.log(111);
+
+  },0)
+
+  new Promise((*resolve*, *reject*) => {
+
+  console.log(222);
+
+  setTimeout(() => {
+
+    console.log(333);
+
+  }, 0);
+
+  resolve(444);
+
+  }).then(*res*=>{
+
+  console.log(res);
+
+  })
+
+  console.log(555);
+```
+
+  /* js执行顺序是同步>微任务队列>宏任务队列，首先同步任务先执行222和555，
+
+  然后promise是微任务队列,这个时候js主线程任务已经执行完毕,开始把微任务队列中的
+
+  任务添加到主线程继续执行，所以输出555，最后定时器是宏任务队列，所以
+
+  最后执行111和333
+
+  js运行，代码刚开始就是定时器，我们首先把定时器加入event table中，注册好里面的回调函数，同时被推入入event queue(任务队列)，等待主线程执行完后，此时，就回去任务队列查找是否有可执行的异步任务，有就推到主线程执行，这个过程的循环执行，就是event loop[事件循环
+
+  */
 # 4 js原型和原型链
 所有对象和函数数组等都有__proto__属性，他指向了其构造函数的protoType对象属性,如对象的构造函数就是new Object(),一般我们会把公共方法存入原型之中，这样方便在实例化对象使用方法时指向同一个内存地址，不要要每实例化一个对象就新开辟一个内存空间用来存放方法，同时__proto__和protoType都有constructor属性，他就是指向构造函数本身，故而，点开constructor属性，里面也会有protoType属性和__proto__等。注意，Object已经是最高层级的构造函数了，原型链也在这为起点。
