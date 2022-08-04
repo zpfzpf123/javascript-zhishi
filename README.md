@@ -27,10 +27,15 @@ https://img.jbzj.com/file_images/article/202109/2021924162932253.png?20218241629
 - 上述过程会不断重复，也就是常说的`Event Loop`(事件循环)。
 
  **再配上代码表达：**
-
-```
-let data = [];``$.ajax({``  ``url:blog.csdn.net,``  ``data:data,``  ``success:() => {``    ``console.log(``'发送成功!'``);``  ``}``})``console.log(``'代码执行结束'``);
-```
+let data = [];
+$.ajax({
+    url:blog.csdn.net,
+    data:data,
+    success:() => {
+        console.log('发送成功!');
+    }
+})
+console.log('代码执行结束');
 
 **上面是一段简易的ajax请求代码：**
 
