@@ -631,3 +631,19 @@ for (let i = 0, len = arr1.length; i < len; i++) {
 }
 console.log('差集', diff)
 ```
+# 8数组去重
+```js
+//数组对象去重
+let a = [{ id: 1, name: 'a' }, { id: 2, name: 'b' }, { id: 3, name: 'c' }, { id: 4, name: 'd' }, { id: 1, name: 'a' }]
+let map = new Map();
+for (let item of a) {
+  map.set(item.id + item.name, item);
+}
+// console.log(map);
+a = [...map.values()];
+console.log(a)
+//数组普通值去重
+let e = [1, 1, 1, 2, 2]
+let f = [...new Set(e)]
+console.log(f);
+```
