@@ -510,3 +510,124 @@ map.forEach(function(value, key, map) {
   console.log(key, value);    // "F" "no"  、 "T" "yes"
 });
 ```
+# 7两个数组求交集，并集和差集
+```js
+//数组普通值
+let a = [1, 2, 3, 4, 5, 10]
+let b = [2, 3, 4, 5]
+//求交集
+let c = [...new Set(a.filter(item => new Set(b).has(item)))]
+// console.log(c);
+//求并集
+let d = [...new Set([].concat(a).concat(b))]
+//求差集
+let e = [...new Set(a.filter(item => !new Set(b).has(item)))]
+console.log(e);
+
+//数组对象值
+// 形如如下数组
+let arr1 = [], arr2 = [];
+arr1 = [
+  {
+    ID: 1,
+    Name: 1,
+    desc: 'Number'
+  },
+  {
+    ID: 2,
+    Name: 2,
+    desc: 'Number'
+  },
+  {
+    ID: 3,
+    Name: 3,
+    desc: 'Number'
+  },
+  {
+    ID: 4,
+    Name: 4,
+    desc: 'Number'
+  },
+  {
+    ID: 5,
+    Name: 5,
+    desc: 'Number'
+  }
+]
+arr2 = [
+  {
+    ID: 5,
+    Name: 5,
+    desc: 'Number'
+  },
+  {
+    ID: 6,
+    Name: 6,
+    desc: 'Number'
+  },
+  {
+    ID: 7,
+    Name: 7,
+    desc: 'Number'
+  },
+  {
+    ID: 8,
+    Name: 8,
+    desc: 'Number'
+  },
+  {
+    ID: 9,
+    Name: 9,
+    desc: 'Number'
+  }
+]
+
+// 交集
+let intersection = []
+for (let i = 0, len = arr1.length; i < len; i++) {
+  for (let j = 0, length = arr2.length; j < length; j++) {
+    if (arr1[i].ID === arr2[j].ID) {
+      intersection.push(arr1[i])
+    }
+  }
+}
+console.log('交集', intersection)
+
+// 并集
+let union = [...arr1, ...arr2]
+for (let i = 0, len = arr1.length; i < len; i++) {
+  for (let j = 0, length = arr2.length; j < length; j++) {
+    if (arr1[i].ID === arr2[j].ID) {
+      union.splice(union.findIndex(item => item.ID === arr1[i].ID), 1)
+    }
+  }
+}
+console.log('并集', union)
+
+// 补集
+let complement = [...arr1, ...arr2]
+for (let i = 0, len = arr1.length; i < len; i++) {
+  for (let j = 0, length = arr2.length; j < length; j++) {
+    if (arr1[i].ID === arr2[j].ID) {
+      complement.splice(complement.findIndex(item => item.ID === arr1[i].ID), 1)
+      complement.splice(complement.findIndex(item => item.ID === arr2[j].ID), 1)
+    }
+  }
+}
+console.log('补集', complement)
+
+// 差集
+let diff = [...arr1]
+for (let i = 0, len = arr1.length; i < len; i++) {
+  let flag = false
+  for (let j = 0, length = arr2.length; j < length; j++) {
+    if (arr1[i].ID === arr2[j].ID) {
+      flag = true
+    }
+  }
+  if (flag) {
+    diff.splice(diff.findIndex(item => item.ID === arr1[i].ID), 1)
+  }
+}
+console.log('差集', diff)
+```
