@@ -214,3 +214,299 @@ A回答：
 JS内存垃圾回收(GC)的机制是从根开始找，某块空间没有再被指向的时会被销毁。上段代码为例，GO的fn指向bar(函数空间)，bar的父级作用域指向GO的foo的AO
 
 引申：那怎么解决闭包引起的内存泄露呢？手动更改fn的值或直接指向null
+#6Set和Map
+# 1、什么是Set()
+
+Set是[es6](https://so.csdn.net/so/search?q=es6&spm=1001.2101.3001.7020)新增的数据结构，**似于数组**，但它的一大特性就是**所有元素都是唯一的**，没有重复的值，我们一般称为集合。
+
+Set本身是一个构造函数，用来生成 Set 数据结构
+
+# 2、增删改查方法
+
+###### 2.1 添加元素`add`
+
+添加某个值，返回 Set 结构本身，当添加实例中已经存在的元素，set不会进行处理添加
+
+```cpp
+let list=new Set();
+list.add(1)
+list.add(2).add(3).add(3)   // 2只被添加了一次
+123
+```
+
+###### 2.2 删除元素 `delete`
+
+删除某个值，返回一个布尔值，表示删除是否成功
+
+```
+let list=new Set([1,20,30,40])
+list.delete(30)      //删除值为30的元素，这里的30并非下标
+12
+```
+
+###### 2.3 判断某元素是否存在`has`
+
+返回一个布尔值，判断该值是否为Set的成员
+
+```
+let list=new Set([1,2,3,4])
+list.has(2)//true
+12
+```
+
+###### 2.4 清除所有元素`clear`
+
+清除所有成员，没有返回值
+
+```
+let list=new Set([1,2,3,4])
+list.clear()
+12
+```
+
+# 3、遍历方法
+
+###### 3.1 遍历 `keys()`
+
+返回键名的遍历器，相等于返回键值遍历器values()
+
+```
+let list2=new Set(['a','b','c'])
+for(let key of list2.keys()){
+   console.log(key)//a,b,c
+}
+1234
+```
+
+###### 3.2 遍历 `values()`
+
+返回键值的遍历器
+
+```
+let list=new Set(['a','b','c'])
+for(let value of list.values()){
+console.log(value)//a,b,c
+}
+1234
+```
+
+###### 3.3 遍历 `entries()`
+
+返回键值对的遍历器
+
+```
+let list=new Set(['4','5','hello'])
+for (let item of list.entries()) {
+  console.log(item);
+}
+// ['4','4']   ['5','5']   ['hello','hello'] 
+12345
+```
+
+###### 3.4 遍历 `forEach()`
+
+使用回调函数遍历每个成员
+
+```
+let list=new Set(['4','5','hello'])
+list.forEach((value, key) => console.log(key + ' : ' + value))
+// 4:4    5:5   hello:hello
+123
+```
+
+# 4、使用情形
+
+###### 4.1 用于[数组](https://so.csdn.net/so/search?q=数组&spm=1001.2101.3001.7020)去重
+
+```cpp
+let arr = [3, 5, 2, 2, 5, 5];
+let setArr = new Set(arr)     // 返回set数据结构  Set(3) {3, 5, 2}
+
+//方法一   es6的...解构
+let unique1 =  [...setArr ];      //去重转数组后  [3,5,2]
+
+//方法二  Array.from()解析类数组为数组
+let unique2 = Array.from(setArr )   //去重转数组后  [3,5,2]
+12345678
+```
+
+###### 4.2 用于字符串去重
+
+```cpp
+let str = "352255";
+let unique = [...new Set(str)].join("");     // 352 
+12
+```
+
+###### 4.3 实现并集、交集、和差集
+
+```cpp
+let a = new Set([1, 2, 3]);
+let b = new Set([4, 3, 2]);
+
+// 并集
+let union = new Set([...a, ...b]);
+// Set {1, 2, 3, 4}
+
+// 交集
+let intersect = new Set([...a].filter(x => b.has(x)));
+// set {2, 3}
+
+// （a 相对于 b 的）差集
+let difference = new Set([...a].filter(x => !b.has(x)));
+// Set {1}
+```
+
+# 1、Map是什么
+
+Map类型是**键值对的有序列表**，而`键和值都可以是任意类型`
+
+#### Map与Set的区别
+
+- Set是一种叫做[集合](https://so.csdn.net/so/search?q=集合&spm=1001.2101.3001.7020)的数据结构，Map是一种叫做字典的数据结构
+
+  > 集合-----是由一堆无序的、相关联的，且不重复的[内存](https://so.csdn.net/so/search?q=内存&spm=1001.2101.3001.7020)结构【数学中称为元素】组成的组合
+  > 字典-----是一些元素的集合。每个元素有一个称作key 的域，不同元素的key 各不相同
+
+- Set集合是以[值，值]的形式存储元素，
+  Map字典是以[键，值]的形式存储
+
+# 2、增删改查
+
+###### 2.1 `size`
+
+size属性返回 Map 结构的成员总数。
+
+```cpp
+const map = new Map();
+map.set('foo', true);
+map.set('bar', false);
+
+map.size // 2
+12345
+```
+
+###### 2.2 `set()`
+
+设置键名key对应的键值为value，然后返回整个 Map 结构
+
+如果key已经有值，则键值会被更新，否则就新生成该键
+
+同时返回的是当前Map对象，可采用链式写法
+
+```cpp
+const m = new Map();
+let fn = function(){}
+
+m.set('edition', 6)        // 键是字符串
+m.set(fn, 'standard')     // 键是函数
+m.set(undefined, 'nah')    // 键是 undefined
+m.set(1, 'a').set(2, 'b').set(3, 'c') // 链式操作
+1234567
+```
+
+###### 2.3 `get()`
+
+get方法读取key对应的键值，如果找不到key，返回undefined
+
+```cpp
+const m = new Map();
+
+const hello = function() {console.log('hello');};
+m.set(hello, 'Hello ES6!') // 键是函数
+
+m.get(hello)  // Hello ES6!
+123456
+```
+
+###### 2.4 `has()`
+
+has方法返回一个布尔值，表示某个键是否在当前 Map 对象之中
+
+```cpp
+const m = new Map();
+
+m.set('edition', 6);
+m.set(262, 'standard');
+m.set(undefined, 'nah');
+
+m.has('edition')     // true
+m.has('years')       // false
+m.has(undefined)     // true
+123456789
+```
+
+###### 2.4 `delete()`
+
+delete方法删除某个键，返回true。如果删除失败，返回false
+
+```cpp
+const m = new Map();
+m.set(undefined, 'nah');
+m.has(undefined)     // true
+
+m.delete(undefined)
+m.has(undefined)       // false
+123456
+```
+
+###### 2.5 `clear()`
+
+clear方法清除所有成员，没有返回值
+
+```cpp
+let map = new Map();
+map.set('foo', true);
+map.set('bar', false);
+
+map.size // 2
+map.clear()
+map.size // 0
+1234567
+```
+
+# 3、遍历
+
+- keys()：返回键名的遍历器
+- values()：返回键值的遍历器
+- entries()：返回所有成员的遍历器
+- forEach()：遍历 Map 的所有成员
+
+```cpp
+const map = new Map([
+  ['F', 'no'],
+  ['T',  'yes'],
+]);
+
+//keys()
+for (let key of map.keys()) {
+  console.log(key);       // "F"  "T"
+}
+
+//values()
+for (let value of map.values()) {
+  console.log(value);    // "no"  "yes"
+}
+
+// entries()
+for (let item of map.entries()) {
+  console.log(item[0], item[1]);
+}
+// "F" "no"  、"T" "yes"
+
+// 或者
+for (let [key, value] of map.entries()) {
+  console.log(key, value);
+}
+// "F" "no" 、"T" "yes"
+
+// 等同于使用map.entries()
+for (let [key, value] of map) {
+  console.log(key, value);
+}
+// "F" "no"  、 "T" "yes"
+
+map.forEach(function(value, key, map) {
+  console.log(key, value);    // "F" "no"  、 "T" "yes"
+});
+```
